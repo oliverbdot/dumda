@@ -69,6 +69,3 @@ class Cities:
                 cities.append(city)
 
         return cities
-
-c = Cities()
-print(c.get_single())

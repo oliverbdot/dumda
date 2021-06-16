@@ -36,12 +36,13 @@ class Cities:
         """
         cities = list()
 
+        full_list = self.get_all()
         # Iterate through the given number
         for _ in range(n):
-            city = choice(self.get_all())
+            city = choice(full_list)
             # Make sure there are no repeat cities in the final list
             while city in cities:
-                city = choice(self.get_all())
+                city = choice(full_list)
 
             cities.append(city)
 

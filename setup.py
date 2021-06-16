@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 
 setup(name='dumda',
-      version='1.18',
+      version='1.19',
       description='generate highly customizable dummy data for data science testing',
       keywords=['data science', 'python'],
       url='https://github.com/oliverbdot/dumda',

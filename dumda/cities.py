@@ -1,53 +1,74 @@
 from random import choice
-import sys
+import csv
 
 
-def get_cities():
-    with open('cities.txt', 'r', encoding='utf-8') as f:
-        cities = []
-        for row in f.readlines():
-            city = row.rstrip()
+class Cities:
+
+    def __init__(self):
+        __file = open('./world_cities.csv', 'r', encoding='utf-8')
+        self.__reader = csv.DictReader(__file)
+
+    def get_all(self):
+        """
+        return list of all cities
+        :return:
+        """
+        return [city['name'].rstrip() for city in list(self.__reader)]
+
+    def get_single(self, country=None):
+        """
+        returns a string of a random city
+        :param country: str, optional parameter choosing which country the city is from
+        :return: str, city name
+        """
+        # Check if there a country preference was given
+        if country is None:
+            return choice(self.get_all())
+        else:
+            return choice(self.get_by_country(country))
+
+    def get_random_cities(self, n):
+        """
+        returns a list of random cities in the given amount
+        :param n: int, number of desired cities
+        :return: list
+        """
+        cities = list()
+
+        # Iterate through the given number
+        for _ in range(n):
+            city = choice(self.get_all())
+            # Make sure there are no repeat cities in the final list
+            while city in cities:
+                city = choice(self.get_all())
+
             cities.append(city)
 
         return cities
 
+    def get_by_country(self, name):
+        """
+        returns a list of cities based on a given country
+        Note: There is only 'United Kingdom' not England
+        :param name: str, country name
+        :return: list
+        """
+        return [city['name'] for city in self.get_all()
+                if city['country'].lower() == name.lower()]
 
-def cities_by_letter(letter):
-    # Open names.txt file to read from and work with
-    with open("names.txt", "r") as file:
-        # Initialize an empty list to store names
-        names = []
-        # Iterate through all the names in the text file
-        for name in file.readlines():
-            # Check if name starts with letter
-            if name[0].lower() == letter.lower():
-                # Remove non letter characters and symbols from names
-                name = name.rstrip()
-                names.append(name)
+    def get_by_letter(self, letter):
+        """
+        returns a list of cities based on a given letter
+        :param letter: chr
+        :return: list
+        """
+        cities = list()
 
-        return names
+        for city in self.get_all():
+            if city[0].lower() == letter:
+                cities.append(city)
 
+        return cities
 
-def get_random_cities(amount):
-    names = get_cities()
-    # Base Case
-    if amount > len(names):
-        print(f"there are less than {amount} names in the given list")
-        sys.exit(1)
-
-    # Initialize an empty list for storing names
-    random_names = []
-    # Iterate for the length of the given amount
-    for _ in range(amount):
-        # Randomly select a name from the list
-        name = choice(names)
-        random_names.append(name)
-
-    return random_names
-
-
-def get_random_city():
-    names = get_cities()
-
-    return choice(names)
-
+c = Cities()
+print(c.get_single())

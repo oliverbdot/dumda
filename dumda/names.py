@@ -1,57 +1,75 @@
+import csv
 from random import choice
-import sys
 
 
-def get_names():
-    """
-    Returns a list of names
-    from a text file
-    """
-    # Open names.txt file to read from and work with
-    with open("names.txt", "r") as file:
-        # Initialize an empty list to store names
-        names = []
-        # Iterate through all the names in the text file
-        for name in file.readlines():
-            # Remove non letter characters and symbols from names
-            name = name.rstrip()
-            names.append(name)
+class Names:
 
-        return names
+    def __init__(self):
+        __file = open('./baby-names.csv', 'r', encoding='utf-8')
+        self.__reader = csv.DictReader(__file)
 
+    def get_all(self):
+        """
+        take in consideration that this is 10s of thousands of names
+        :return: list
+        """
+        return [name['name'] for name in list(self.__reader)]
 
-def names_by_letter(letter):
-    # Open names.txt file to read from and work with
-    with open("names.txt", "r") as file:
-        # Initialize an empty list to store names
-        names = []
-        # Iterate through all the names in the text file
-        for name in file.readlines():
-            # Check if name starts with letter
-            if name[0].lower() == letter.lower():
-                # Remove non letter characters and symbols from names
-                name = name.rstrip()
-                names.append(name)
+    def get_single(self):
+        """
+        returns a single random name of any sex
+        :return: str
+        """
 
-        return names
+        return choice(self.get_all())
 
+    def boy_names(self, n=None):
+        """
+        returns a list a given amount of boy designated names
+        :param n: int
+        :return: list
+        """
+        boys = [name['name'] for name in list(self.__reader)
+                if name['sex'] == 'boy']
+        # Check if no number was passed
+        if n is None:
+            return boys
+        else:
+            return self.get_random(n, boys)
 
-def get_random_names(names, amount):
-    """
-    Takes a list of names and an Amount
-    and returns a list the length of the given amount of randomly selected names
-    """
-    # Base Case
-    if amount > len(names):
-        print(f"there are less than {amount} names in the given list")
-        sys.exit(1)
+    def girl_names(self, n=None):
+        """
+        returns a list a given amount of girl designated names
+        :param n: int
+        :return: list
+        """
 
-    # Initialize an empty list for storing names
-    random_names = []
-    # Iterate for the length of the given amount
-    for _ in range(amount):
-        # Randomly select a name from the list
-        name = choice(names)
-        random_names.append(name)
+        girls = [name['name'] for name in list(self.__reader)
+                 if name['sex'] == 'girl']
 
-    return random_names
+        if n is None:
+            return girls
+        else:
+            return self.get_random(n, girls)
+
+    def get_random(self, n, name_dir=None):
+        """
+        returns a list of random names based on a given amount
+        :param name_dir:
+        :param n: int
+        :return:
+        """
+        if name_dir is None:
+            name_dir = self.get_all()
+        name_list = list()
+
+        # Iterate through the given number
+        for _ in range(n):
+            name = choice(name_dir)
+            # Make sure there are no repeat names in the final list
+            while name in name_list:
+                name = choice(name_dir)
+
+            name_list.append(name)
+
+        return name_list

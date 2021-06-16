@@ -1,3 +1,3 @@
-import cities
-import names
-import phones
+from . import cities
+from . import names
+from . import phones

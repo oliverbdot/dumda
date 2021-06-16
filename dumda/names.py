@@ -1,11 +1,12 @@
 import csv
 from random import choice
-
+import os
 
 class Names:
 
     def __init__(self):
-        __file = open('./baby-names.csv', 'r', encoding='utf-8')
+        __csv_path = os.path.join("dumda", "baby-names.csv")
+        __file = open(__csv_path, 'r', encoding='utf-8')
         self.__reader = csv.DictReader(__file)
 
     def get_all(self):

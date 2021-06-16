@@ -3,9 +3,9 @@ from setuptools import find_packages
 
 
 setup(name='dumda',
-      version='1.1',
+      version='1.18',
       description='generate highly customizable dummy data for data science testing',
-      keywords='data science python',
+      keywords=['data science', 'python'],
       url='https://github.com/oliverbdot/dumda',
       author='Oliver B.',
       author_email='oliverbcontact@gmail.com',

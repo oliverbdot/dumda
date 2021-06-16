@@ -1,1 +1,1 @@
-include dumda/*.csv
+recursive-include dumda *.csv

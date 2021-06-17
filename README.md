@@ -118,7 +118,7 @@ girls = names.girl_names(5)
 print(boys)
 print(girls)
 ```
-####output:
+#### output:
 ```bash
 ['Sam', 'Erich', 'Malcolm', 'Mitchel', 'Elbert']
 ['Chantel', 'Aleta', 'Kari', 'Rena', 'Eve']
@@ -178,7 +178,7 @@ if __name__ == '__main__':
         print(person)
 ```
 
-#####output:
+##### output:
 ```bash
 Levi from Yefremov.	Number: 985-829-2480
 Vashti from Amvrosiyivka.	Number: 216-391-6856

@@ -1,4 +1,4 @@
-def generate_number():
+def generate_number(area_code=None):
     """
     Generates a random phone number
     """
@@ -6,6 +6,10 @@ def generate_number():
     NPA = str(randint(201, 999))
     NXX = str(randint(2, 9)) + str(randint(00, 99))
     XXXX = str(randint(0000, 9999))
-    phone = NPA + "-" + NXX + "-" + XXXX
+
+    if area_code is None:
+        phone = NPA + "-" + NXX + "-" + XXXX
+    else:
+        phone = str(area_code) + "-" + NXX + "-" + XXXX
 
     return phone

@@ -5,16 +5,21 @@ import os
 
 class Cities:
     def __init__(self):
-        __path = os.path.join(os.path.dirname(__file__), "world_cities.csv")
-        __file = open(__path, 'r', encoding='utf-8')
-        self.__reader = csv.DictReader(__file)
+
+        self.cities = self.get_all()
+
+    def get_cities(self):
+        path = os.path.join(os.path.dirname(__file__), "world_cities.csv")
+        f = open(path, 'r', encoding='utf-8')
+        reader = csv.DictReader(f)
+        return reader
 
     def get_all(self):
         """
         return list of all cities
         :return:
         """
-        return [city['name'].rstrip() for city in list(self.__reader)]
+        return [city['name'].rstrip() for city in list(self.get_cities())]
 
     def get_single(self, country=None):
         """
@@ -40,12 +45,8 @@ class Cities:
         # Iterate through the given number
         for _ in range(n):
             city = choice(full_list)
-            # Make sure there are no repeat cities in the final list
-            while city in cities:
-                city = choice(full_list)
 
             cities.append(city)
-
         return cities
 
     def get_by_country(self, name):
@@ -55,7 +56,7 @@ class Cities:
         :param name: str, country name
         :return: list
         """
-        return [city['name'] for city in self.get_all()
+        return [city['name'] for city in self.get_cities()
                 if city['country'].lower() == name.lower()]
 
     def get_by_letter(self, letter):
@@ -67,7 +68,7 @@ class Cities:
         cities = list()
 
         for city in self.get_all():
-            if city[0].lower() == letter:
+            if city[0].lower() == letter.lower():
                 cities.append(city)
 
         return cities

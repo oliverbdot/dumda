@@ -8,7 +8,7 @@ def read(fname):
 
 
 setup(name='dumda',
-      version='2.0',
+      version='2.1',
       description='generate highly customizable dummy data for data science testing',
       long_description=read('README.md'),
       long_description_content_type='text/markdown',

@@ -7,18 +7,53 @@ class Names:
     def __init__(self):
         self.names = self.get_all()
 
-    def get_names(self):
+    def __get_fnames(self):
         path = os.path.join(os.path.dirname(__file__), "baby-names.csv")
         f = open(path, 'r', encoding='utf-8')
         reader = csv.DictReader(f)
         return reader
+
+    def __get_lnames(self):
+        path = os.path.join(os.path.dirname(__file__), "last-names.txt")
+        f = open(path, 'r', encoding='utf-8')
+        surnames = []
+        for line in f.readlines():
+            # Remove all unwanted bits of each line and convert
+            # to title from uppercase
+            surname = line.rstrip().title()
+            surnames.append(surname)
+
+        return surnames
 
     def get_all(self):
         """
         take in consideration that this is 10s of thousands of names
         :return: list
         """
-        return [name['name'] for name in list(self.get_names())]
+        return [name['name'] for name in list(self.__get_fnames())]
+
+    def get_fullnames(self, n: int, sex: str = None):
+        """
+        Returns a list of full names of a given amount,
+        optionally choose whether they should all be of the same sex
+        :param n: int
+        :param sex: str
+        :return: list
+        """
+        # check if no sex or an invalid query was passed
+        if sex is None or (sex.lower() != 'boy') or (sex.lower() != 'girl'):
+            name_list = self.get_random(n)
+        elif sex.lower() == 'boy':
+            name_list = self.boy_names(n)
+        elif sex.lower() == 'girl':
+            name_list = self.girl_names(n)
+
+        for index, name in enumerate(name_list):
+            # Generate a random last name
+            last_name = choice(self.__get_lnames())
+            name_list[name_list.index(name)] = str(name + " " + last_name)
+
+        return name_list
 
     def get_single(self):
         """
@@ -34,7 +69,7 @@ class Names:
         :param n: int
         :return: list
         """
-        boys = [name['name'] for name in list(self.get_names())
+        boys = [name['name'] for name in list(self.__get_fnames())
                 if name['sex'] == 'boy']
         # Check if no number was passed
         if n is None:
@@ -50,7 +85,7 @@ class Names:
         :return: list
         """
 
-        girls = [name['name'] for name in list(self.get_names())
+        girls = [name['name'] for name in list(self.__get_fnames())
                  if name['sex'] == 'girl']
 
         # Check if no number was passed

@@ -98,7 +98,7 @@ Flight from Reno to Marshalltown
 
 
 ## Names
-######Note: Names runs much slower than cities as there are 200,000 names in this package
+###### Note: Names runs much slower than cities as there are 200,000 names in this package
 functions overlap between the names and cities packages such as get_all, get_single, get_random and get_by_letter. \
 However, there are some function unique to names.
 
@@ -118,11 +118,33 @@ girls = names.girl_names(5)
 print(boys)
 print(girls)
 ```
-####output:
+#### output:
 ```bash
 ['Sam', 'Erich', 'Malcolm', 'Mitchel', 'Elbert']
 ['Chantel', 'Aleta', 'Kari', 'Rena', 'Eve']
 ```
+
+### Get Full Names
+if need be, you can also get full names
+```python
+from dumda.names import Names
+names = Names()
+
+# get a given number of random full names
+print(names.get_fullnames(5))
+
+# get full names based off of sex
+print(names.get_fullnames(5, 'boy'))
+print(names.get_fullnames(5, 'girl'))
+```
+
+#### output:
+```bash
+['Kurt Trudell', 'Frieda Corridoni', 'Colleen Nicolo', 'Cruz Loudin', 'Orin Mcbreen']
+['Noah Sharratt', 'Jerrie Skanes', 'Homer Newcomb', 'Nathaniel Cavendish', 'Sabrina Heltzel']
+['Everett Tyre', 'Jeannette Trautwein', 'Theodore Slaubaugh', 'Maryanne Markos', 'Angel Norrix']
+```
+
 
 ## Phone Numbers
 In cases that you are making something like a phonebook or directory, you can also generate phone numbers (that follow U.S. formatting).
@@ -178,7 +200,7 @@ if __name__ == '__main__':
         print(person)
 ```
 
-#####output:
+#### output:
 ```bash
 Levi from Yefremov.	Number: 985-829-2480
 Vashti from Amvrosiyivka.	Number: 216-391-6856

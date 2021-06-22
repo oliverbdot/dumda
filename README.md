@@ -206,3 +206,31 @@ Levi from Yefremov.	Number: 985-829-2480
 Vashti from Amvrosiyivka.	Number: 216-391-6856
 Dave from Jalpāiguri.	Number: 338-592-9126
 ```
+
+### Emails
+Using this package's name class you can also generate random emails
+```python
+from dumda.names import Names
+from dumda.email import generate_email
+
+names = Names()
+name = names.get_fullnames(1)[0]
+
+print(name)
+# generate 5 times to show different ways it can generate
+print(generate_email(name))
+print(generate_email(name))
+print(generate_email(name))
+print(generate_email(name))
+print(generate_email(name))
+```
+
+##### output:
+```bash
+Alison Snowden
+alisons@qux.com
+alisons@baz.com
+asnowden@bar.net
+asnowden@baz.com
+alisons@baz.com
+```

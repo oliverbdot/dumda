@@ -1,5 +1,5 @@
 # Dumda
-Python Library to get fast extensive Dummy Data for testing
+Python Library to get fast extensive Dummy Data for testing https://pypi.org/project/dumda/
 ## Installation
 ```
 pip install dumda

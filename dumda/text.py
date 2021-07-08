@@ -36,7 +36,7 @@ def generate_text(paragraphs: int = 1):
         return paragraph
 
     text = ''
-    for i in range(paragraphs):
+    for j in range(paragraphs):
         text = text + generateParagraph()
 
     return text

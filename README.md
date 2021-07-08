@@ -211,7 +211,7 @@ Dave from Jalpāiguri.	Number: 338-592-9126
 Using this package's name class you can also generate random emails
 ```python
 from dumda.names import Names
-from dumda.email import generate_email
+from dumda.emails import generate_email
 
 names = Names()
 name = names.get_fullnames(1)[0]

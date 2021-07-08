@@ -1,14 +1,8 @@
-import cities
-import names
-import phones
-import emails
-import text
-# from . import cities
-# from . import names
-# from . import phones
-# from . import emails
-# from . import text
-
+from . import cities
+from . import names
+from . import phones
+from . import emails
+from . import text
 
 class Person(object):
     def __init__(self, country: str ="united states", sex: str = None):

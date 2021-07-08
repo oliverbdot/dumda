@@ -169,44 +169,6 @@ print(dc_phones)
 563-873-5164
 ['202-822-1231', '202-620-6058', '202-336-3025', '202-565-7063', '202-525-2625']
 ```
-
-### Extra: All together
-An example of combing all the functionality of this package.
-```python
-from dumda import cities, names, phones
-
-class Person(object):
-    def __init__(self, name, hometown, number):
-        self.name = name
-        self.hometown = hometown
-        self.number = number
-        
-    def __repr__(self):
-        return f"{self.name} from {self.hometown}.\tNumber: {self.number}"
-
-def create_person():
-    n = names.Names()
-    c = cities.Cities()
-    name = n.get_single()
-    city = c.get_single()
-    number = phones.generate_number()
-    
-    return Person(name, city, number)
-
-
-if __name__ == '__main__':
-    for _ in range(3):
-        person = create_person()
-        print(person)
-```
-
-#### output:
-```bash
-Levi from Yefremov.	Number: 985-829-2480
-Vashti from Amvrosiyivka.	Number: 216-391-6856
-Dave from Jalpāiguri.	Number: 338-592-9126
-```
-
 ### Emails
 Using this package's name class you can also generate random emails
 ```python
@@ -233,4 +195,22 @@ alisons@baz.com
 asnowden@bar.net
 asnowden@baz.com
 alisons@baz.com
+```
+
+### Person Object
+```python
+from dumda import Person
+person_one = Person()
+person_two = Person()
+print(person_one.get_json())
+print(person_two.get_json())
+
+# Alternatively you can just access values
+# from the object as normal i.e. person_one.email
+```
+
+##### output:
+```bash
+{'full_name': 'Muhammad Santrizos', 'location': 'Universal City', 'email': 'muhammadsantrizos@baz.com', 'phone': '581-277-1989'}
+{'full_name': 'Blair Lust', 'location': 'Avenel', 'email': 'blairl@qux.net', 'phone': '395-521-9731'}
 ```

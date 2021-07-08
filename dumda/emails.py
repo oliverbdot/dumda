@@ -1,6 +1,3 @@
-from random import choice
-
-
 def generate_email(fullname: str):
     """
     returns a string of a generated email
@@ -8,6 +5,7 @@ def generate_email(fullname: str):
     :param fullname: 
     :return: 
     """
+    from random import choice
     user_format = choice(['fi last', 'first li', 'first last'])
     if user_format == 'fi last':
         user = (fullname.split()[0][0] + fullname.split()[1]).lower()

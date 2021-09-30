@@ -102,8 +102,8 @@ Flight from Reno to Marshalltown
 functions overlap between the names and cities packages such as get_all, get_single, get_random and get_by_letter. \
 However, there are some function unique to names.
 
-### Get Names by Sex
-you can get a list of names of a single sex and optionally specify the amount
+### Get Names by Gender
+you can get a list of names of a single group and optionally specify the amount
 ```python
 from dumda.names import Names
 names = Names()

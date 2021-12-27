@@ -5,212 +5,139 @@ Python Library to get fast extensive Dummy Data for testing https://pypi.org/pro
 pip install dumda
 ```
 
-
 ## Usage:
 
-## Cities
+### Cities
 
 ```python
-from dumda.cities import Cities
+from dumda import cities
 
-# initialize cities class
-c = Cities()
+# get a single random city, either from the
+# entire pool or from a specific country
+print(cities.get_random_city())
+print(cities.get_random_city("United States"))
 
-# get the full list of all available cities (23k+ cities)
-c.get_all()
+# get a list of random cities, this can also be
+# called with a given country (cities.get_random_cities(5, "Zimbabwe")
+print(cities.get_random_cities(10))
 ```
-
-Of course, rarely or ever will someone need a list of 23 thousand cities. Not to mention the impact on speed.\
-in more common cases, you can extract sample sizes of cities.
-
-### get single
-```python
-from dumda.cities import Cities
-c = Cities()
-c.get_single()
-```
-#### output:
+#### output
 ```bash
-'Scicli'
-```
+Somerset East
+Paducah
+['Watsa', 'Westerstede', 'Porto-Novo', 'Dushanbe', 
+'Hoeyang', 'Uozu', 'Riyadh', 'Lashio', 'Arendal', 
+'Tlapa de Comonfort']
+``` 
 
-### get a random set of cities
-the most basic implementation; get a list of randomly selected cities of a chosen amount
+### Names
+the meta is pretty much the same with names and cities, except a few
+additional operations
 ```python
-from dumda.cities import Cities
-c = Cities()
-
-c.get_random_cities(10)
-```
-
-#### output:
-```bash
-['Hawthorn South',
- 'Paghmān',
- 'Bruntál',
- 'Secunda',
- 'Beroun',
- 'Luxu',
- 'Kārkala',
- 'Jelcz',
- 'Al Qaryatayn',
- 'Amadeo']
-```
-### get cities by identifiers
-you can specify more on the exact cities you would like; cities by country or by letter. \
-Getting a city by letter is primarily for fun, however imagine that you are making a fight application and want them to be domestic.
-```python
-from dumda.cities import Cities
-from random import choice
-c = Cities()
-# Get city by letter
-o_cities = c.get_by_letter("o")
-print(o_cities)
+from dumda import names
+# get a random name
+print(names.get_random_name())
+# instead of specific countries, you can pass specific sex
+print(names.get_random_name("boy"))
 print()
-# Get City by country
-us_cities = c.get_by_country("United States")
-# Note there is no 'england' just united kingdom
+# like, cities get a random list
+b = names.get_random_names(15, "boy")
+g = names.get_random_names(15, "girl")
+the_class = b + g
+print("class list: {}".format(the_class))
 
-class Flight:
-    def __init__(self, origin, destination):
-        self.origin = origin
-        self.destination = destination
-    
-    def __repr__(self):
-        return f"Flight from {self.origin} to {self.destination}"
-    
-    
-if __name__ == '__main__':
-    x = choice(us_cities)
-    y = choice(us_cities)
-    
-    flight = Flight(x, y)
-    print(flight)
+print()
+# additional query options
+# generate a full name, for more accurate dummy data
+print(names.get_full_name())
+
+# there is also a multiple version of the function, 
+# and of course you can enter a sex
+print(names.get_full_names(5))
+print(names.get_full_name("boy"))
+print(names.get_full_names(3, "girl"))
+
+print()
+# I added this just because, but you can also 
+# get a list of names based on letter
+good_names = names.get_names_by_letter("o", 3)
+print(good_names)
+print(good_names[-1])
 ```
-#### output:
+#### output
 ```bash
-['Xankandi', 'Xaçmaz', 'Xique Xique', 'Xanxerê', 'Xinghua', 'Xucheng', 'Xunchang', 'Xuanzhou', 'Xixiang', 'Xiuying', 'Xiulin', 'Xiongzhou', 'Xinzhou', 'Xinzhou', 'Xinzhi', 'Xinyu', 'Xinyang', 'Xintai', 'Xinshi', 'Xinpu', 'Xinji', 'Xining', 'Xingtai', 'Xindian', 'Xindi', 'Ximei', 'Xihe', 'Xichang', 'Xiazhuang', 'Xiazhen', 'Xiashi', 'Xiaoweizhai', 'Xiaoshan', 'Xiaolingwei', 'Xiaogan', 'Xianyang', 'Xiantao', 'Xianshuigu', 'Xiannü', 'Xianning', 'Xianju', 'Xiangxiang', 'Xiangtan', 'Xiangyang', 'Xiangcheng Chengguanzhen', 'Xi’an', 'Xiamen', 'Xishan', 'Xinhui', 'Xinyi', 'Xincheng', 'Xiuyan', 'Xinqing', 'Xinmin', 'Xinglongshan', 'Xingcheng', 'Xilin Hot', 'Xifeng', 'Xiaoshi', 'Xanten', 'Xàtiva', 'Xirivella', 'Xánthi', 'Xam Nua', 'Xoxocotla', 'Xonacatlán', 'Xochitepec', 'Xochimilco', 'Xicotepec de Juárez', 'Xico', 'Xalapa de Enríquez', 'Xai-Xai', 'Xenia']
+Armando
+Andre
 
-Flight from Reno to Marshalltown
+class list: ['Lupe', 'Wilbert', 'Torrence', 'Shad', 'Kyson', 
+'Keaton', 'Destin', 'Ridge', 'Jorden', 'Enzo', 'Reginal', 
+'Aarav', 'Deontae', 'Reggie', 'Kameron', 'Anya', 'Therese', 
+'Kaylee', 'Linette', 'Greta', 'Allie', 'Deanne', 'Coretta', 
+'Nila', 'Jazlyn', 'Lolita', 'Cherry', 'Clare', 'Breanne', 'Cheri']
+
+Davian Yung
+['Glynda Zavala', 'Unknown Booth', 'Leigh Flood', 'Ben Dupree', 
+'Adrien Zachary']
+Kimberly Higgins
+['Jocelyn Zelaya', 'Kalene Ross', 'Melba Tran']
+
+['Oscar', 'Otis', 'Oliver']
+Oliver
 ```
 
-
-
-
-## Names
-###### Note: Names runs much slower than cities as there are 200,000 names in this package
-functions overlap between the names and cities packages such as get_all, get_single, get_random and get_by_letter. \
-However, there are some function unique to names.
-
-### Get Names by Gender
-you can get a list of names of a single group and optionally specify the amount
-```python
-from dumda.names import Names
-names = Names()
-
-# you can either leave the function call blank or
-# pass an integer for the given amount. 
-# Passing an integer is recommended as to remember that
-# there are around 100,000 names for each sex
-boys = names.boy_names(5)
-girls = names.girl_names(5)
-
-print(boys)
-print(girls)
-```
-#### output:
-```bash
-['Sam', 'Erich', 'Malcolm', 'Mitchel', 'Elbert']
-['Chantel', 'Aleta', 'Kari', 'Rena', 'Eve']
-```
-
-### Get Full Names
-if need be, you can also get full names
-```python
-from dumda.names import Names
-names = Names()
-
-# get a given number of random full names
-print(names.get_fullnames(5))
-
-# get full names based off of sex
-print(names.get_fullnames(5, 'boy'))
-print(names.get_fullnames(5, 'girl'))
-```
-
-#### output:
-```bash
-['Kurt Trudell', 'Frieda Corridoni', 'Colleen Nicolo', 'Cruz Loudin', 'Orin Mcbreen']
-['Noah Sharratt', 'Jerrie Skanes', 'Homer Newcomb', 'Nathaniel Cavendish', 'Sabrina Heltzel']
-['Everett Tyre', 'Jeannette Trautwein', 'Theodore Slaubaugh', 'Maryanne Markos', 'Angel Norrix']
-```
-
-
-## Phone Numbers
+### Phone Numbers
 In cases that you are making something like a phonebook or directory, you can also generate phone numbers (that follow U.S. formatting).
 You can optionally pass an area code if you want to generate phones for people from a specific area.
 ```python
 from dumda.phones import generate_number
-
-# regular generation
-x = generate_number()
-
-# area code generation
-dc_phones = list()
-for i in range(5):
-    phone = generate_number(area_code=202)
-    dc_phones.append(phone)
-
-print(x)
-print(dc_phones)
+# generate a random phone number based on US standard
+print(generate_number())
+# generate based on a given area code
+print(generate_number("202"))
 ```
 #### output:
 ```bash
-563-873-5164
-['202-822-1231', '202-620-6058', '202-336-3025', '202-565-7063', '202-525-2625']
+901-212-2734
+202-741-8998
 ```
 ### Emails
 Using this package's name class you can also generate random emails
 ```python
-from dumda.names import Names
+from dumda.names import get_full_name
 from dumda.emails import generate_email
-
-names = Names()
-name = names.get_fullnames(1)[0]
-
-print(name)
-# generate 5 times to show different ways it can generate
-print(generate_email(name))
-print(generate_email(name))
-print(generate_email(name))
-print(generate_email(name))
-print(generate_email(name))
+# Pass a full name to generate an email
+y = get_full_name()
+x = generate_email(y)
+print(y)
+print(x)
+z = get_full_name()
+print(z)
+print(generate_email(z))
 ```
 
 ##### output:
 ```bash
-Alison Snowden
-alisons@qux.com
-alisons@baz.com
-asnowden@bar.net
-asnowden@baz.com
-alisons@baz.com
+Armando Charles
+acharles@foo.org
+Virgie Innocent
+virgieinnocent@qux.net
 ```
 
 ### Person Object
+Now if you were thinking of combining these for some objects
+in your program and wanted to keep it simple, I've got it covered.
 ```python
 from dumda import Person
 person_one = Person()
-person_two = Person()
-print(person_one.get_json())
-print(person_two.get_json())
+# optionally pass sex and country of person
+person_two = Person(country="United Kingdom", sex="girl")
+print(person_one.json())
+print(person_two.json())
 
-# Alternatively you can just access values
-# from the object as normal i.e. person_one.email
 ```
 
 ##### output:
 ```bash
-{'full_name': 'Muhammad Santrizos', 'location': 'Universal City', 'email': 'muhammadsantrizos@baz.com', 'phone': '581-277-1989'}
-{'full_name': 'Blair Lust', 'location': 'Avenel', 'email': 'blairl@qux.net', 'phone': '395-521-9731'}
+{'full_name': 'Armando Charles', 'location': 'Fairhope', 'email': 'acharles@baz.net', 'phone': '763-859-7018'}
+{'full_name': 'Kinsley Louis', 'location': 'Weybridge', 'email': 'kinsleyl@qux.com', 'phone': '623-88-6788'}
 ```

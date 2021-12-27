@@ -1,156 +1,15 @@
+"""
+Name: Oliver Gaither
+Date: Dec 27, 2021
+Purpose: provide functions for easily generated
+names to be used as dummy data for testing code and
+potentially building systems
+"""
 import csv
 import random
-import time
-from random import choice
 import os
 
 
-class Names:
-    def __init__(self):
-        self.names = self.get_all()
-
-    def __get_fnames(self):
-        path = os.path.join(os.path.dirname(__file__), "baby-names.csv")
-        f = open(path, 'r', encoding='utf-8')
-        reader = csv.DictReader(f)
-        return reader
-
-    def __get_lnames(self):
-        path = os.path.join(os.path.dirname(__file__), "last-names.txt")
-        f = open(path, 'r', encoding='utf-8')
-        surnames = []
-        for line in f.readlines():
-            # Remove all unwanted bits of each line and convert
-            # to title from uppercase
-            surname = line.rstrip().title()
-            surnames.append(surname)
-
-        return surnames
-
-    def get_all(self):
-        """
-        take in consideration that this is 10s of thousands of names
-        :return: list
-        """
-        return [name['name'] for name in list(self.__get_fnames())]
-
-    def get_fullnames(self, n: int, sex: str = None):
-        """
-        Returns a list of full names of a given amount,
-        optionally choose whether they should all be of the same sex
-        :param n: int
-        :param sex: str
-        :return: list
-        """
-        try:
-            if sex.lower() == 'boy':
-                name_list = self.boy_names(n)
-            elif sex.lower() == 'girl':
-                name_list = self.girl_names(n)
-            else:
-                name_list = self.get_random(n)
-        except AttributeError:
-            name_list = self.get_random(n)
-
-        for index, name in enumerate(name_list):
-            # Generate a random last name
-            last_name = choice(self.__get_lnames())
-            name_list[name_list.index(name)] = str(name + " " + last_name)
-
-        # Check if only one name was requested
-        if n == 1:
-            name_list = name_list[0]
-
-        return name_list
-
-    def get_single(self):
-        """
-        returns a single random name of any sex
-        :return: str
-        """
-
-        return choice(self.get_all())
-
-    def boy_names(self, n=None):
-        """
-        returns a list a given amount of boy designated names
-        :param n: int
-        :return: list
-        """
-        boys = [name['name'] for name in list(self.__get_fnames())
-                if name['sex'] == 'boy']
-        # Check if no number was passed
-        if n is None:
-            return boys
-        else:
-            # Return a a given amount of random boy names
-            return self.get_random(n, boys)
-
-    def girl_names(self, n=None):
-        """
-        returns a list a given amount of girl designated names
-        :param n: int
-        :return: list
-        """
-
-        girls = [name['name'] for name in list(self.__get_fnames())
-                 if name['sex'] == 'girl']
-
-        # Check if no number was passed
-        if n is None:
-            return girls
-        else:
-            # Return a given amount of random girl names
-            return self.get_random(n, girls)
-
-    def get_by_letter(self, letter, n=None):
-        """
-        returns a list of names starting with a given letter, user can
-        optionally choose how many
-        :param n: int
-        :param letter: chr
-        :return: list
-        """
-        names_of_letter = [name for name in self.get_all()
-                           if name[0].lower() == letter.lower()]
-        if n is None:
-            return names_of_letter
-        else:
-            return self.get_random(n, names_of_letter)
-
-    def get_random(self, n, name_dir=None):
-        """
-        returns a list of random names based on a given amount
-        :param name_dir:
-        :param n: int
-        :return:
-        """
-        if name_dir is None:
-            name_dir = self.get_all()
-        name_list = list()
-
-        # Iterate through the given number
-        for _ in range(n):
-            name = choice(name_dir)
-            # Make sure there are no repeat names in the final list
-            while name in name_list:
-                name = choice(name_dir)
-
-            name_list.append(name)
-
-        return name_list
-
-
-def runtime(func):
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        result = func(*args, **kwargs)
-        stop = time.perf_counter()
-        print("{} runtime: {}s".format(func.__name__, stop-start))
-        return result
-    return wrapper
-
-@runtime
 def get_names():
     """
     returns a two dimensional list of rows from a csv
@@ -163,23 +22,85 @@ def get_names():
         fields = next(reader)
         return list(reader)
 
-@runtime
-def get_random_name(sex=None, seed=None):
-    """
 
+def get_random_name(sex=None):
     """
-    if seed is not None:
-        random.seed(seed)
+    returns a random first name, can take
+    optional parameters such as sex and seed
+    :sex: sex of the name to be returned
+    :seed: optional random seed
+    :return: a name
+    """
     if sex is None:
         return random.choice([x[1] for x in get_names()])
     elif (sex.lower() == "boy") or (sex.lower() == "girl"):
         return random.choice([x[1] for x in get_names() if x[3] == sex.lower()])
+    else:
+        print("Invalid sex: {}".format(sex))
+        return -1
 
 
+def get_names_by_letter(char, n, idx=0):
+    """
+    get a given amount of names
+    based on the first letter
+    :char: letter
+    :n: amount of names
+    """
+    if n < 999:
+        if n == 0:
+            return []
+        else:
+            names = [x[1] for x in get_names() if x[1][0].lower() == char.lower()]
+            if n > len(names):
+                print("there are less names that start with {} than you queried for".format(char))
+                return None
+            else:
+                return [names[idx]] + get_names_by_letter(char, n - 1, idx + 1)
 
-if __name__ == '__main__':
-    (print(get_random_name("boy", seed=5)))
+
+def __get_last_names():
+    path = os.path.join(os.path.dirname(__file__), "last-names.txt")
+    with open(path, 'r', encoding='utf-8') as f:
+        return list(map(lambda x: x.rstrip(), f.readlines()))
 
 
+def get_full_name(sex=None):
+    """
+    returns a typical full name of a
+    single given name and a family surname
+    :sex: optional sex of the given name
+    :return: full name
+    """
+    return "{} {}".format(get_random_name(sex), random.choice(__get_last_names()))
+
+
+def get_full_names(n, sex=None):
+    """
+    returns a list of full names
+    :n: number of names
+    :sex: optional sex of the names
+    :return: list of full names
+    """
+    if n < 999:
+        if n == 0:
+            return []
+        else:
+            return [get_full_name(sex)] + get_full_names(n - 1, sex)
+
+
+def get_random_names(n, sex=None):
+    """
+    returns a list of given size of random names,
+    can optionally set the sex of all the names to
+    be in the list
+    :n: number of names
+    :sex: sex of the names
+    :return: list of names
+    """
+    if n == 0:
+        return []
+    else:
+        return [get_random_name(sex)] + get_random_names(n - 1, sex)
 
 

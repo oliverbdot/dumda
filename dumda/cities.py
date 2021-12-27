@@ -1,3 +1,26 @@
+"""
+Name: Oliver Gaither
+Date: Dec 27, 2021
+Purpose: provide functions for easily generated
+cities to be used as dummy data for testing code and
+potentially building systems
+"""
+import time
+import os
+import csv
+
+
+def runtime(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        stop = time.perf_counter()
+        print("{} runtime: {}s".format(func.__name__, stop - start))
+        return result
+
+    return wrapper
+
+
 class Cities:
     def __init__(self):
         self.cities = self.get_all()
@@ -64,3 +87,16 @@ class Cities:
                 cities.append(city)
 
         return cities
+
+
+@runtime
+def main():
+    path = os.path.join(os.path.dirname(__file__), "old", "world_cities.csv")
+    f = open(path, 'r', encoding='utf-8')
+    reader = csv.reader(f)
+    fields = next(reader)
+    print(list(reader))
+
+
+if __name__ == '__main__':
+    main()

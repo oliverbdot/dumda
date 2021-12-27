@@ -42,18 +42,24 @@ class Names:
         :param sex: str
         :return: list
         """
-        # check if no sex or an invalid query was passed
-        if sex is None or (sex.lower() != 'boy') or (sex.lower() != 'girl'):
+        try:
+            if sex.lower() == 'boy':
+                name_list = self.boy_names(n)
+            elif sex.lower() == 'girl':
+                name_list = self.girl_names(n)
+            else:
+                name_list = self.get_random(n)
+        except AttributeError:
             name_list = self.get_random(n)
-        elif sex.lower() == 'boy':
-            name_list = self.boy_names(n)
-        elif sex.lower() == 'girl':
-            name_list = self.girl_names(n)
 
         for index, name in enumerate(name_list):
             # Generate a random last name
             last_name = choice(self.__get_lnames())
             name_list[name_list.index(name)] = str(name + " " + last_name)
+
+        # Check if only one name was requested
+        if n == 1:
+            name_list = name_list[0]
 
         return name_list
 

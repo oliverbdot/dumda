@@ -1,4 +1,6 @@
 import csv
+import random
+import time
 from random import choice
 import os
 
@@ -131,3 +133,47 @@ class Names:
             name_list.append(name)
 
         return name_list
+
+
+def runtime(func):
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        stop = time.perf_counter()
+        print("{} runtime: {}s".format(func.__name__, stop-start))
+        return result
+    return wrapper
+
+@runtime
+def get_names():
+    """
+    returns a two dimensional list of rows from a csv
+    file containing the most popular names from 1980
+    :return: list of rows in csv of names
+    """
+    PATH = os.path.join(os.path.dirname(__file__), "names.csv")
+    with open(PATH, "r") as file:
+        reader = csv.reader(file)
+        fields = next(reader)
+        return list(reader)
+
+@runtime
+def get_random_name(sex=None, seed=None):
+    """
+
+    """
+    if seed is not None:
+        random.seed(seed)
+    if sex is None:
+        return random.choice([x[1] for x in get_names()])
+    elif (sex.lower() == "boy") or (sex.lower() == "girl"):
+        return random.choice([x[1] for x in get_names() if x[3] == sex.lower()])
+
+
+
+if __name__ == '__main__':
+    (print(get_random_name("boy", seed=5)))
+
+
+
+

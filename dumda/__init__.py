@@ -4,14 +4,15 @@ from . import phones
 from . import emails
 from . import text
 
+
 class Person(object):
-    def __init__(self, country: str ="united states", sex: str = None):
-        self.name = names.Names().get_fullnames(n = 1, sex=sex)
-        self.location = cities.Cities().get_random_cities(n=1, country=country)
+    def __init__(self, country: str = "United States", sex: str = None):
+        self.name = names.get_full_name(sex)
+        self.location = cities.get_random_city(country)
         self.email = emails.generate_email(self.name)
         self.phone = phones.generate_number()
 
-    def get_json(self):
+    def json(self):
         """
         returns a Json Object of the generated
         Person object as an alternative to manually working

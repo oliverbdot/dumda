@@ -5,98 +5,74 @@ Purpose: provide functions for easily generated
 cities to be used as dummy data for testing code and
 potentially building systems
 """
-import time
+import random
 import os
 import csv
 
 
-def runtime(func):
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        result = func(*args, **kwargs)
-        stop = time.perf_counter()
-        print("{} runtime: {}s".format(func.__name__, stop - start))
-        return result
+def __get_cities():
+    # TODO: redownload a new cities csv as only current state of city names
+    # TODO: is not very diverse
+    path = os.path.join(os.path.dirname(__file__), "world_cities.csv")
+    with open(path, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        next(reader)
+        return list(reader)
 
-    return wrapper
+
+def get_cities():
+    """
+    get complete list of available
+    city names
+    """
+    return [x[0] for x in __get_cities()]
 
 
-class Cities:
-    def __init__(self):
-        self.cities = self.get_all()
+def __get_countries_obj():
+    c = __get_cities()
 
-    def __get_cities(self):
-        import os
-        import csv
-        path = os.path.join(os.path.dirname(__file__), "world_cities.csv")
-        f = open(path, 'r', encoding='utf-8')
-        reader = csv.DictReader(f)
-        return reader
-
-    def get_all(self):
-        """
-        return list of all cities
-        :return:
-        """
-        return [city['name'].rstrip() for city in list(self.__get_cities())]
-
-    def get_random_cities(self, n, country: str = None):
-        """
-        returns a list of random cities in the given amount
-        :param country:
-        :param n: int, number of desired cities
-        :return: list
-        """
-        from random import choice
-        cities = list()
-
-        if country:
-            full_list = self.get_by_country(country)
+    def create_obj(obj, keys):
+        if len(keys) == 0:
+            return obj
         else:
-            full_list = self.get_all()
+            obj[keys[0]] = []
+            return create_obj(obj, keys[1:])
 
-        # Iterate through the given number
-        for _ in range(n):
-            city = choice(full_list)
+    countries = []
+    for var in c:
+        if var[1] not in countries:
+            countries.append(var[1])
 
-            cities.append(city)
-        if n == 1:
-            return cities[0]
-        return cities
+    o = create_obj({}, countries)
+    for var in c:
+        o[var[1]].append(var[0])
 
-    def get_by_country(self, name):
-        """
-        returns a list of cities based on a given country
-        Note: There is only 'United Kingdom' not England
-        :param name: str, country name
-        :return: list
-        """
-        return [city['name'] for city in self.__get_cities()
-                if city['country'].lower() == name.lower()]
-
-    def get_by_letter(self, letter):
-        """
-        returns a list of cities based on a given letter
-        :param letter: chr
-        :return: list
-        """
-        cities = list()
-
-        for city in self.get_all():
-            if city[0].lower() == letter.lower():
-                cities.append(city)
-
-        return cities
+    return o
 
 
-@runtime
-def main():
-    path = os.path.join(os.path.dirname(__file__), "old", "world_cities.csv")
-    f = open(path, 'r', encoding='utf-8')
-    reader = csv.reader(f)
-    fields = next(reader)
-    print(list(reader))
+def get_random_city(country=None):
+    """
+    return a random city, optionally
+    pass a specific country
+    :country: chosen country
+    :return: a random city
+    """
+    if country is not None:
+        return random.choice(__get_countries_obj()[country])
+    else:
+        return random.choice(get_cities())
 
 
-if __name__ == '__main__':
-    main()
+def get_random_cities(n, country=None):
+    """
+    returns a list of random cities
+    optionally pass a country
+    :n: number of cities
+    :country: chosen country
+    :return: list of cities
+    """
+    if n == 0:
+        return []
+    else:
+        return [get_random_city(country)] + get_random_cities(n - 1, country)
+
